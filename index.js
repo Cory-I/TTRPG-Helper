@@ -99,7 +99,17 @@ function heal(maxHp, currentHp, healAmount) {
  * @returns {number} the character's proficiency bonus
  */
 function getProficiencyBonus(level, rank) {
-  if (level=untrained)
+  if (rank === "trained") {
+    return level + 2;
+  } else if (rank === "expert") {
+    return level + 4;
+  } else if (rank === "master") {
+    return level + 6;
+  } else if (rank === "legendary") {
+    return level + 8;
+  } else {
+    return level;
+  }
   // TODO
 }
 
@@ -114,6 +124,15 @@ function getProficiencyBonus(level, rank) {
  * @returns {number} the cover bonus to AC
  */
 function getCoverBonus(behindObstacle, takingCover) {
+  if (behindObstacle === false && takingCover === false) {
+    return 0;
+  } else if (behindObstacle === false && takingCover === true) {
+    return 0;
+  } else if (behindObstacle === true && takingCover === false) {
+    return 2;
+  } else if (takingCover === true && behindObstacle === true) {
+    return 4;
+  }
   // TODO
 }
 
@@ -130,6 +149,15 @@ function getCoverBonus(behindObstacle, takingCover) {
  * @returns {number} the creature's remaining HP after taking damage
  */
 function getRemainingHp(maxHp, currentHp, damage) {
+  if (damage >= maxHp * 2) {
+    return -1;
+  } else if (damage >= currentHp) {
+    return 0;
+  } else if (currentHp >= maxHp) {
+    return "you can't do that.";
+  } else {
+    return currentHp - damage;
+  }
   // TODO
 }
 
@@ -142,6 +170,16 @@ function getRemainingHp(maxHp, currentHp, damage) {
  * @returns {boolean} whether the creature can see
  */
 function canSee(light, vision) {
+  if (light === "bright") {
+    return true;
+  } else if (light === "dim" && (vision === "low-light" || vision === "dark")) {
+    return true;
+  } else if (light === "dark" && vision === "dark") {
+    return true;
+  } else {
+    return false;
+  }
+
   // TODO
 }
 
@@ -156,5 +194,14 @@ function canSee(light, vision) {
  * @returns {number} damage dealt by the strike
  */
 function getStrikeDamage(attack, ac, damage) {
+  if (attack === "critical" && damage * 2 > ac) {
+    return damage * 2;
+  } else if (attack === "critical" && damage * 2 <= ac) {
+    return damage * 0;
+  } else if (attack === "normal" && damage > ac) {
+    return damage;
+  } else {
+    return 0;
+  }
   // TODO
 }
